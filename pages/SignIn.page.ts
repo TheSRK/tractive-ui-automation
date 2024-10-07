@@ -1,27 +1,42 @@
-import {type Locator, type Page, expect} from '@playwright/test'
+// SignInPage.ts
 
-export class SignIn{
-    readonly page: Page;
-    readonly emailField: Locator;
-    readonly passwordField: Locator;
-    readonly signInButton: Locator;
-    readonly errorMessage: Locator;
+import { Page, Locator, expect } from '@playwright/test';
 
-    constructor(page: Page){
-        this.page = page;
-        this.emailField = page.locator('input[ng-model= form.email');
-        this.passwordField = page.locator('input[ng-model= form.pwd]');
-        this.signInButton = page.getByRole('form',{name: 'loginForm'});
-        this.errorMessage = page.locator('div[ng-show="error"]');
-    }
+export class SignInPage {
+  readonly page: Page;
+  readonly emailField: Locator;
+  readonly passwordField: Locator;
+  readonly signInButton: Locator;
+  readonly errorMessage: Locator; 
 
-    public async fillSignInForm(email: string, password: string){
-        await this.emailField.fill(email);
-        await this.passwordField.fill(password);
-    }
 
-    public async clickSignInButton(){
-        await this.signInButton.click();
-        
+  constructor(page: Page) {
+    this.page = page;
+    this.emailField = page.locator('input[type="email"]');
+    this.passwordField = page.locator('input[type="password"]');
+    this.signInButton = page.getByRole('button', { name: 'Sign In', exact: true });
+    this.errorMessage = page.locator('div.toast-message[aria-label*="Oops!"]');
+  }
+
+  // Method to fill the sign in form
+  async fillSignInForm(email: string, password: string): Promise<void> {
+    await this.emailField.fill(email);
+    await this.passwordField.fill(password);
+  }
+
+  // Method to click the Sign In button
+  async clickSignIn(): Promise<void> {
+    await this.signInButton.click();
+  }
+
+    // Method to validate error messages displayed on the UI
+    async validateErrorMessage(): Promise<void> {
+  
+      await this.errorMessage.waitFor({ state: 'visible', timeout: 5000 });
+      await expect(this.errorMessage).toBeVisible();
+  
+      // Log the text content of the error message
+      const messageText = await this.errorMessage.textContent();
+      console.log(`Error message text: ${messageText}`);
     }
 }

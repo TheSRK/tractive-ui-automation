@@ -1,33 +1,34 @@
-import {expect, type Page, type Locator} from '@playwright/test'
+// CreateAccountPage.ts
 
-export class CreatAccountPage{
-    readonly page: Page;
-    readonly firstNameField: Locator;
-    readonly lastNameField: Locator;
-    readonly emailField: Locator; 
-    readonly passwordField: Locator;
-    readonly createAccountButton: Locator;
+import { Page, Locator } from '@playwright/test';
 
-    constructor(page: Page){
-        this.page = page;
-        this.firstNameField = page.getByRole('textbox', {name: 'firstName'});
-        this.lastNameField = page.getByRole('textbox', {name: 'lastName'});  
-        this.emailField = page.getByRole('textbox', {name: 'email'});
-        this.passwordField = page.getByRole('textbox', {name: 'password'});
-        this.createAccountButton = page.getByRole('form', {name:'signUpForm'});     
-    }
+export class CreateAccountPage {
+  readonly page: Page;
+  readonly firstNameField: Locator;
+  readonly lastNameField: Locator;
+  readonly emailField: Locator;
+  readonly passwordField: Locator;
+  readonly createAccountButton: Locator;
 
-    public async fillCreateAccountForm(firstName: string, lastName: string, email: string, password: string){
-        await this.firstNameField.fill( firstName);
-        await this.lastNameField.fill(lastName);
-        await this.emailField.fill(email);
-        await this.passwordField.fill( password);
-    }
+  constructor(page: Page) {
+    this.page = page;
+    this.firstNameField = page.locator('input[name="firstName"]');
+    this.lastNameField = page.locator('input[name="lastName"]');
+    this.emailField = page.locator('input[name="email"]');
+    this.passwordField = page.locator('input[name="password"]');
+    this.createAccountButton = page.getByRole('button', { name: 'Create Account' });
+  }
 
-    public async clickCreateAccountButton(){
-        await this.createAccountButton.click();
-    }
+  // Method to fill the Create Account form
+  async fillCreateAccountForm(firstName: string, lastName: string, email: string, password: string): Promise<void> {
+    await this.firstNameField.fill(firstName);
+    await this.lastNameField.fill(lastName);
+    await this.emailField.fill(email);
+    await this.passwordField.fill(password);
+  }
 
-    
-
+  // Method to click the Create Account button
+  async clickCreateAccount(): Promise<void> {
+    await this.createAccountButton.click();
+  }
 }
