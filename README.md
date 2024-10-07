@@ -1,6 +1,3 @@
-# tractive-ui-automation
-# Playwright Test Automation Framework
-
 ## Overview
 
 This repository contains a test automation framework based on the Page Object Model (POM) using Playwright and TypeScript. It is designed for automating web application testing with a focus on maintainability, scalability, and readability.
